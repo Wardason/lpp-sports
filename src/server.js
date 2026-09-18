@@ -64,6 +64,7 @@ function originAllowed(c) {
 }
 
 app.get('/api/captcha', (c) => {
+  if (!config.captchaSecret) return c.json({ error: 'KI-Anbindung nicht konfiguriert' }, 503);
   const rl = rateLimit(`cap:${clientIp(c)}`, 30, 60000);
   if (!rl.allowed) return c.json({ error: 'Zu viele Anfragen' }, 429);
   return c.json(createChallenge());
@@ -85,6 +86,8 @@ app.post('/api/plan', async (c) => {
   } catch {
     return c.json({ error: 'Ungültige Anfrage' }, 400);
   }
+
+  if (!config.captchaSecret) return c.json({ error: 'KI-Anbindung nicht konfiguriert' }, 503);
 
   if (!verifyCaptcha(payload?.captcha)) {
     return c.json({ error: 'Sicherheitsprüfung fehlgeschlagen. Bitte Seite neu laden.' }, 403);

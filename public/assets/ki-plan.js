@@ -95,7 +95,7 @@ genBtn.addEventListener('click',async()=>{
   let text='';
   try{
     const captcha=await (captchaPromise||fetchAndSolve());
-    if(!captcha)throw new Error('captcha');
+    if(!captcha){status.textContent='Die KI-Anbindung ist noch nicht eingerichtet. Hier siehst du eine Musteransicht.';planOut.innerHTML=md(DEMO);return}
     status.textContent='Dein Plan wird erstellt. Das dauert etwa eine Minute …';
     const r=await fetch('/api/plan',{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({data:data(),captcha}),signal:ctl.signal});
