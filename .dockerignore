@@ -1,0 +1,12 @@
+.git
+.gitignore
+Dockerfile
+.dockerignore
+README.md
+ANLEITUNG.md
+ANLEITUNG-KI.md
+netlify.toml
+netlify/
+versand-pdfs/
+node_modules/
+api/ki-config.php

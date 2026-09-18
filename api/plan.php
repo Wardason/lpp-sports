@@ -7,12 +7,21 @@ declare(strict_types=1);
 
 $config = @include __DIR__ . '/ki-config.php';
 if (!is_array($config)) {
-    fehler('Konfiguration fehlt (ki-config.php)', 500);
+    // Fallback fuer Container/Coolify: Konfiguration aus Environment-Variablen.
+    // So bleibt der Schluessel aus dem Repo raus und wird zur Laufzeit injiziert.
+    $config = [
+        'anbieter'   => getenv('KI_ANBIETER') ?: 'openai',
+        'schluessel' => getenv('KI_SCHLUESSEL') ?: (getenv('OPENAI_API_KEY') ?: (getenv('ANTHROPIC_API_KEY') ?: '')),
+        'modell'     => getenv('KI_MODELL') ?: '',
+    ];
 }
 
 $anbieter = strtolower($config['anbieter'] ?? 'openai');
 $schluessel = $config['schluessel'] ?? '';
-$modell = $config['modell'] ?? ($anbieter === 'anthropic' ? 'claude-sonnet-5' : 'gpt-5.6-terra');
+$modell = $config['modell'] ?? '';
+if ($modell === '') {
+    $modell = $anbieter === 'anthropic' ? 'claude-sonnet-5' : 'gpt-5.6-terra';
+}
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') fehler('Nur POST erlaubt', 405);
 if ($schluessel === '') fehler('API-Schlüssel fehlt', 500);
