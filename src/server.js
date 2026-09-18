@@ -6,6 +6,7 @@ import { serveStatic } from '@hono/node-server/serve-static';
 import { Hono } from 'hono';
 import { basicAuth } from 'hono/basic-auth';
 import { config } from './config.js';
+import { clientIpFrom } from './clientip.js';
 import { createChallenge, verifyCaptcha } from './captcha.js';
 import { rateLimit } from './ratelimit.js';
 import { buildPlan } from './prompt.js';
@@ -44,10 +45,16 @@ if (process.env.BASIC_AUTH_USER && process.env.BASIC_AUTH_PASSWORD) {
   console.log('[config] Basic Auth aktiv fuer Benutzer', process.env.BASIC_AUTH_USER);
 }
 
+// Anzahl vertrauenswuerdiger Proxy-Hops. Coolify/Traefik = 1. Muss zur realen
+// Zahl passen: zu hoch macht die IP faelschbar, zu niedrig teilen sich alle
+// hinter demselben Proxy eine IP.
+const TRUSTED_PROXY_HOPS = Number.isFinite(Number(process.env.TRUSTED_PROXY_HOPS))
+  ? Number(process.env.TRUSTED_PROXY_HOPS)
+  : 1;
+
 function clientIp(c) {
-  const xff = c.req.header('x-forwarded-for');
-  if (xff) return xff.split(',')[0].trim();
-  return c.req.header('x-real-ip') || 'unknown';
+  const fallback = c.req.header('x-real-ip') || 'unknown';
+  return clientIpFrom(c.req.header('x-forwarded-for'), TRUSTED_PROXY_HOPS, fallback);
 }
 
 function originAllowed(c) {
