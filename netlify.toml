@@ -1,9 +1,0 @@
-[build]
-  publish = "."
-  functions = "netlify/functions"
-
-# Die PDFs werden nur per E-Mail verschickt und sollen nicht direkt abrufbar sein.
-[[redirects]]
-  from = "/versand-pdfs/*"
-  to = "/index.html"
-  status = 404
