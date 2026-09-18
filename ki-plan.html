@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KI-Trainingsplan erstellen – LPP Sports</title>
+<meta name="description" content="Individueller Trainings- und Ernährungsplan per KI – einmalige Zahlung, in wenigen Minuten fertig.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,400..900;1,62..125,400..900&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/lpp-logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+<header class="site">
+  <div class="wrap bar">
+    <a class="logo" href="index.html" aria-label="LPP Sports Startseite"><span class="mono" aria-hidden="true"><span class="mono-l">L</span><span class="mono-p">P</span></span><span class="wordmark"><b>LPP</b><span>Sports</span></span></a>
+    <button class="menu-btn" aria-expanded="false" aria-controls="mainnav">Menü</button>
+    <nav class="main" id="mainnav">
+      <a href="index.html#guides">Gratis-Guides</a>
+      <a href="index.html#angebote">Angebote</a>
+      <a href="ki-plan.html">KI-Plan</a>
+      <a href="index.html#faq">FAQ</a>
+      <a class="btn btn-primary" href="index.html#coaching">Coaching anfragen</a>
+    </nav>
+  </div>
+</header>
+<main id="top">
+<section class="page-hero navy">
+  <div class="wrap">
+    <a class="crumb" href="index.html">‹ Zur Startseite</a>
+    <h1>Dein KI-Trainings- &amp; Ernährungsplan</h1>
+    <p class="lede">Beantworte ein paar Fragen. Daraus entsteht ein Trainingsplan und ein einfacher Ernährungsplan – abgestimmt auf dich.</p>
+    <div class="facts-row">
+      <div><b>ca. 3 Min</b>für die Fragen</div>
+      <div><b>€ – einmalig</b>kein Abo · so viel wie ein Monat Basis-Coaching</div>
+      <div><b>5 Schritte</b>zum fertigen Plan</div>
+    </div>
+  </div>
+</section>
+<section id="ki-plan" class="config-page" style="padding-top:56px">
+  <div class="wrap">
+
+    <div class="config">
+      <ol class="steps" id="stepList">
+        <li class="active"><i>1</i><span>Über dich</span></li>
+        <li><i>2</i><span>Dein Training</span></li>
+        <li><i>3</i><span>Übungen &amp; Schwachstellen</span></li>
+        <li><i>4</i><span>Ernährung</span></li>
+        <li><i>5</i><span>Plan erstellen</span></li>
+      </ol>
+
+      <form class="panel" id="planForm" novalidate>
+        <!-- Schritt 1 -->
+        <div class="step-panel show" data-step="0">
+          <h3>Über dich</h3>
+          <p class="hint">Damit wir Belastung und Umfang richtig einschätzen.</p>
+          <div class="two">
+            <div class="q"><label for="age">Alter</label><input id="age" name="age" type="number" min="18" max="99" value="35" required></div>
+            <div class="q"><label for="sex">Geschlecht</label>
+              <select id="sex" name="sex"><option>Männlich</option><option>Weiblich</option><option>Divers</option></select></div>
+            <div class="q"><label for="height">Größe (cm)</label><input id="height" name="height" type="number" min="120" max="230" value="182"></div>
+            <div class="q"><label for="weight">Gewicht (kg)</label><input id="weight" name="weight" type="number" min="40" max="250" value="88"></div>
+          </div>
+          <div class="q"><span class="ql">Trainingserfahrung</span>
+            <div class="chips" role="radiogroup">
+              <label class="chip"><input type="radio" name="level" value="Einsteiger" checked><span>Einsteiger</span></label>
+              <label class="chip"><input type="radio" name="level" value="Wiedereinsteiger"><span>Wiedereinsteiger</span></label>
+              <label class="chip"><input type="radio" name="level" value="Fortgeschritten (1+ Jahr)"><span>Fortgeschritten</span></label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Schritt 2 -->
+        <div class="step-panel" data-step="1">
+          <h3>Dein Training</h3>
+          <p class="hint">Sei ehrlich mit deiner Zeit. Ein Plan, der in deine Woche passt, schlägt jeden perfekten Plan.</p>
+          <div class="q"><span class="ql">Wie oft pro Woche kannst du trainieren?</span>
+            <div class="chips">
+              <label class="chip"><input type="radio" name="days" value="2"><span>2 Tage</span></label>
+              <label class="chip"><input type="radio" name="days" value="3"><span>3 Tage</span></label>
+              <label class="chip"><input type="radio" name="days" value="4" checked><span>4 Tage</span></label>
+              <label class="chip"><input type="radio" name="days" value="5"><span>5 Tage</span></label>
+            </div>
+          </div>
+          <div class="q"><span class="ql">Zeit pro Einheit</span>
+            <div class="chips">
+              <label class="chip"><input type="radio" name="duration" value="45 Minuten"><span>45 Min</span></label>
+              <label class="chip"><input type="radio" name="duration" value="60 Minuten" checked><span>60 Min</span></label>
+              <label class="chip"><input type="radio" name="duration" value="75 Minuten"><span>75 Min</span></label>
+            </div>
+          </div>
+          <div class="q"><span class="ql">Was hat Priorität? <span class="help">Mehrfachauswahl</span></span>
+            <div class="chips">
+              <label class="chip"><input type="checkbox" name="goals" value="Muskelaufbau" checked><span>Muskelaufbau</span></label>
+              <label class="chip"><input type="checkbox" name="goals" value="Fett verlieren"><span>Fett verlieren</span></label>
+              <label class="chip"><input type="checkbox" name="goals" value="Maximalkraft"><span>Mehr Kraft</span></label>
+              <label class="chip"><input type="checkbox" name="goals" value="Gesundheit und Rücken"><span>Gesundheit &amp; Rücken</span></label>
+              <label class="chip"><input type="checkbox" name="goals" value="Mehr Energie im Alltag"><span>Mehr Energie</span></label>
+            </div>
+          </div>
+          <div class="q"><span class="ql">Wo trainierst du?</span>
+            <div class="chips">
+              <label class="chip"><input type="radio" name="place" value="Fitnessstudio" checked><span>Fitnessstudio</span></label>
+              <label class="chip"><input type="radio" name="place" value="Zuhause mit Kurzhanteln"><span>Zuhause mit Hanteln</span></label>
+              <label class="chip"><input type="radio" name="place" value="Zuhause ohne Geräte"><span>Zuhause ohne Geräte</span></label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Schritt 3 -->
+        <div class="step-panel" data-step="2">
+          <h3>Übungen &amp; Schwachstellen</h3>
+          <p class="hint">Übungen, die du gern machst, machst du auch regelmäßig.</p>
+          <div class="q"><span class="ql">Welche Übungen willst du drin haben?</span>
+            <div class="chips">
+              <label class="chip"><input type="checkbox" name="fav" value="Bankdrücken" checked><span>Bankdrücken</span></label>
+              <label class="chip"><input type="checkbox" name="fav" value="Kniebeugen"><span>Kniebeugen</span></label>
+              <label class="chip"><input type="checkbox" name="fav" value="Kreuzheben"><span>Kreuzheben</span></label>
+              <label class="chip"><input type="checkbox" name="fav" value="Klimmzüge"><span>Klimmzüge</span></label>
+              <label class="chip"><input type="checkbox" name="fav" value="Schulterdrücken"><span>Schulterdrücken</span></label>
+              <label class="chip"><input type="checkbox" name="fav" value="Rudern"><span>Rudern</span></label>
+              <label class="chip"><input type="checkbox" name="fav" value="Beinpresse"><span>Beinpresse</span></label>
+              <label class="chip"><input type="checkbox" name="fav" value="Bizeps- und Trizepsübungen"><span>Arme</span></label>
+            </div>
+          </div>
+          <div class="q"><label for="avoid">Übungen, die du nicht machen willst oder kannst</label><input id="avoid" name="avoid" type="text" placeholder="z. B. Kreuzheben, Dips"></div>
+          <div class="q"><span class="ql">Deine Schwachstellen</span>
+            <div class="chips">
+              <label class="chip"><input type="checkbox" name="weak" value="Brust"><span>Brust</span></label>
+              <label class="chip"><input type="checkbox" name="weak" value="Rücken"><span>Rücken</span></label>
+              <label class="chip"><input type="checkbox" name="weak" value="Schultern"><span>Schultern</span></label>
+              <label class="chip"><input type="checkbox" name="weak" value="Arme"><span>Arme</span></label>
+              <label class="chip"><input type="checkbox" name="weak" value="Beine"><span>Beine</span></label>
+              <label class="chip"><input type="checkbox" name="weak" value="Bauch und Rumpf"><span>Bauch &amp; Rumpf</span></label>
+            </div>
+          </div>
+          <div class="q"><label for="limits">Beschwerden oder Einschränkungen <span class="help">optional</span></label><input id="limits" name="limits" type="text" placeholder="z. B. Knie zwickt bei tiefen Kniebeugen"></div>
+        </div>
+
+        <!-- Schritt 4 -->
+        <div class="step-panel" data-step="3">
+          <h3>Ernährung</h3>
+          <p class="hint">Einfach gehalten: genug Eiweiß, gesunde Fette, Kohlenhydrate rund ums Training – und das, worauf du nicht verzichten willst.</p>
+          <div class="q"><label for="allergies">Allergien oder Unverträglichkeiten</label><input id="allergies" name="allergies" type="text" placeholder="z. B. Laktose, Nüsse – oder leer lassen"></div>
+          <div class="q"><label for="keep">Worauf willst du auf keinen Fall verzichten?</label><input id="keep" name="keep" type="text" placeholder="z. B. Kaffee, Brot am Morgen, Pasta"></div>
+          <div class="q"><label for="dislike">Was isst du gar nicht?</label><input id="dislike" name="dislike" type="text" placeholder="z. B. Fisch, Pilze"></div>
+          <div class="two">
+            <div class="q"><label for="diet">Ernährungsweise</label>
+              <select id="diet" name="diet"><option>Alles</option><option>Vegetarisch</option><option>Vegan</option><option>Pescetarisch</option></select></div>
+            <div class="q"><label for="meals">Mahlzeiten pro Tag</label>
+              <select id="meals" name="meals"><option>2</option><option selected>3</option><option>4</option><option>5</option></select></div>
+          </div>
+          <div class="q"><span class="ql">Ein Cheat Meal pro Woche?</span>
+            <div class="chips">
+              <label class="chip"><input type="radio" name="cheat" value="Ja, ein Cheat Meal pro Woche" checked><span>Ja, gerne</span></label>
+              <label class="chip"><input type="radio" name="cheat" value="Kein Cheat Meal"><span>Nein, brauche ich nicht</span></label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Schritt 5 -->
+        <div class="step-panel" data-step="4">
+          <h3>Plan erstellen</h3>
+          <p class="hint">Prüfe deine Angaben. Danach folgt die Bezahlung.</p>
+          <div class="summary" id="summary"></div>
+          <div class="pay-box">
+            <div><b>Einmalzahlung · Preis folgt</b><br><span>Prototyp: Die Bezahlung ist noch nicht angebunden.</span></div>
+            <button class="btn btn-primary" type="button" id="genBtn">Plan jetzt erstellen</button>
+          </div>
+          <div class="output" id="output" aria-live="polite">
+            <p class="status" id="genStatus"></p>
+            <div class="plan" id="planOut"></div>
+            <div class="cta-row" id="genTools" hidden>
+              <button class="btn btn-ghost" type="button" id="stopBtn">Stoppen</button>
+            </div>
+            <p class="disclaimer">Der Plan ist eine allgemeine Trainings- und Ernährungsempfehlung und ersetzt keine ärztliche oder ernährungsmedizinische Beratung. Bei Beschwerden, Vorerkrankungen oder Allergien bitte vorher ärztlich abklären.</p>
+          </div>
+        </div>
+
+        <div class="panel-nav">
+          <button class="btn btn-ghost" type="button" id="backBtn" hidden>Zurück</button>
+          <span></span>
+          <button class="btn btn-primary" type="button" id="nextBtn">Weiter</button>
+        </div>
+        <p class="form-msg err" id="stepMsg" role="alert"></p>
+      </form>
+    </div>
+    <div class="cross">
+      <div><h3>Lieber mit persönlicher Begleitung?</h3><p>Im Coaching fragt jemand regelmäßig nach – und dein Plan wächst mit.</p></div>
+      <a class="btn btn-primary" href="index.html#coaching">Coaching anfragen</a>
+    </div>
+  </div>
+</section>
+</main>
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <a class="logo" href="index.html" style="color:#fff"><span class="mono" aria-hidden="true"><span class="mono-l">L</span><span class="mono-p">P</span></span><span class="wordmark"><b>LPP</b><span>Sports</span></span></a>
+      <nav aria-label="Rechtliches"><a href="#">Impressum</a><a href="#">Datenschutz</a><a href="#">AGB</a><a href="#">Kontakt</a></nav>
+    </div>
+    <p class="proto">Prototyp – Preise, Bezahlung, E-Mail-Versand und rechtliche Seiten sind noch nicht angebunden.</p>
+  </div>
+</footer>
+<script src="assets/menu.js" defer></script>
+<script src="assets/ki-plan.js" defer></script>
+</body>
+</html>

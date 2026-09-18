@@ -1,0 +1,16 @@
+# Secrets: echte KI-Konfiguration niemals ins Repo
+api/ki-config.php
+*.env
+.env
+.env.*
+
+# Lead-Magnet PDFs bleiben lokal (nur per Mail-Versand)
+versand-pdfs/
+
+# System- und Editor-Dateien
+.DS_Store
+Thumbs.db
+*.log
+
+# Dependencies (falls spaeter genutzt)
+node_modules/
