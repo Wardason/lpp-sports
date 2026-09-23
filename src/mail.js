@@ -123,15 +123,17 @@ function esc(s) {
     .replaceAll("'", '&#39;');
 }
 
-// Coaching-Anfrage: geht an MAIL_TO_COACHING, Antworten landen beim Kunden.
+// Coaching-Anfrage: geht an alle Adressen aus MAIL_TO_COACHING, Antworten landen beim Kunden.
 // Danach eine Bestaetigung an den Kunden, deren Fehler die Anfrage nicht kippt.
 // Erwartet bereits validierte und bereinigte Felder.
 export async function sendCoaching({ name, email, why, phone }) {
   if (!config.resendKey) return simulate(`Coaching-Anfrage von ${email}`);
-  if (!config.mailToCoaching) throw mailError('MAIL_TO_COACHING fehlt', 'NO_MAIL');
+  const team = config.mailToCoaching.filter(validEmail);
+  if (team.length !== config.mailToCoaching.length) console.error('[mail] MAIL_TO_COACHING enthaelt ungueltige Adressen, sie werden ignoriert.');
+  if (!team.length) throw mailError('MAIL_TO_COACHING fehlt', 'NO_MAIL');
 
   await resendSend({
-    to: [config.mailToCoaching],
+    to: team,
     reply_to: email,
     subject: `Coaching-Anfrage von ${name}`,
     text: `Name: ${name}\nE-Mail: ${email}\nWoran es hakt: ${why || '-'}\nTelefon: ${phone || '-'}`,

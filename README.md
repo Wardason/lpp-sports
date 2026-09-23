@@ -57,7 +57,7 @@ Tests: `npm test`.
 | `RESEND_API_KEY` | ja fuer Mailversand | Resend-Key, ohne ihn liefert `/api/lead` in Produktion 503 |
 | `MAIL_FROM` | ja fuer Mailversand | Absender auf verifizierter Domain |
 | `MAIL_BCC` | optional | Archivkopie der Guides-Mails |
-| `MAIL_TO_COACHING` | ja fuer Coaching-Formular | Posteingang fuer Coaching-Anfragen, ohne ihn liefert `/api/coaching` 503 |
+| `MAIL_TO_COACHING` | ja fuer Coaching-Formular | Posteingaenge fuer Coaching-Anfragen, mehrere mit Komma getrennt, ohne ihn liefert `/api/coaching` 503 |
 | `PDF_DIR` | ja fuer Mailversand | Ordner mit Guide 3 (Coolify-Volume) |
 | `STRIPE_SECRET_KEY` | spaeter | erst bei Zahlschranke |
 | `STRIPE_WEBHOOK_SECRET` | spaeter | erst bei Zahlschranke |

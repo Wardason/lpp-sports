@@ -36,7 +36,7 @@ lesbar.
 ## Coaching-Anfrage
 
 `POST /api/coaching` (Name, E-Mail, Grund, optional Telefon). Die Anfrage geht an
-`MAIL_TO_COACHING` mit `reply_to` auf den Kunden, danach eine Bestaetigung an den
+alle Adressen aus `MAIL_TO_COACHING` (Komma-Liste, ungueltige werden ignoriert) mit `reply_to` auf den Kunden, danach eine Bestaetigung an den
 Kunden. Scheitert nur die Bestaetigung, gilt die Anfrage trotzdem als gesendet.
 Gleiches Anti-Spam wie `/api/lead` (gemeinsame Funktion `looksLikeBot`), eigene
 Rate-Limits. Nutzereingaben werden fuer den Betreff einzeilig gemacht und im

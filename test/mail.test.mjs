@@ -16,7 +16,7 @@ process.env.PDF_DIR = dir;
 process.env.RESEND_API_KEY = 'test-key';
 process.env.MAIL_FROM = 'LPP Sports <hallo@example.com>';
 process.env.MAIL_BCC = 'archiv@example.com';
-process.env.MAIL_TO_COACHING = 'coach@example.com';
+process.env.MAIL_TO_COACHING = 'coach@example.com, zwei@example.com,,kaputt';
 const { sendGuides, sendCoaching, validEmail } = await import('../src/mail.js');
 
 test('validEmail lehnt Header-Injection und Mehrfachadressen ab', () => {
@@ -52,7 +52,7 @@ test('sendGuides meldet Resend-Fehler als UPSTREAM', async () => {
   await assert.rejects(() => sendGuides('kunde@example.com'), (e) => e.code === 'UPSTREAM');
 });
 
-test('sendCoaching schickt Anfrage an uns und Bestaetigung an den Kunden, HTML escaped', async () => {
+test('sendCoaching schickt Anfrage an alle Team-Adressen und Bestaetigung an den Kunden, HTML escaped', async () => {
   const calls = [];
   globalThis.fetch = async (url, init) => {
     calls.push(JSON.parse(init.body));
@@ -62,7 +62,7 @@ test('sendCoaching schickt Anfrage an uns und Bestaetigung an den Kunden, HTML e
   assert.equal(r.simulated, false);
   assert.equal(calls.length, 2);
   const [anfrage, bestaetigung] = calls;
-  assert.deepEqual(anfrage.to, ['coach@example.com']);
+  assert.deepEqual(anfrage.to, ['coach@example.com', 'zwei@example.com']);
   assert.equal(anfrage.reply_to, 'kunde@example.com');
   assert.ok(anfrage.html.includes('&lt;b&gt;Max&lt;/b&gt;'));
   assert.ok(!anfrage.html.includes('<b>Max</b>'));

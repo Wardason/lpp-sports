@@ -271,7 +271,7 @@ serve({ fetch: app.fetch, port: config.port }, (info) => {
   if (!config.resendKey) {
     console.warn(config.isProd ? '[config] RESEND_API_KEY fehlt, /api/lead und /api/coaching liefern 503.' : '[config] RESEND_API_KEY fehlt, /api/lead und /api/coaching laufen im Testmodus (keine Mail).');
   }
-  if (!config.mailToCoaching) {
+  if (!config.mailToCoaching.length) {
     console.warn('[config] MAIL_TO_COACHING fehlt, /api/coaching liefert 503.');
   }
 });

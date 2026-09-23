@@ -29,8 +29,8 @@ export const config = {
   resendKey: process.env.RESEND_API_KEY || '',
   mailFrom: process.env.MAIL_FROM || '',
   mailBcc: process.env.MAIL_BCC || '',
-  // Posteingang fuer Coaching-Anfragen
-  mailToCoaching: process.env.MAIL_TO_COACHING || '',
+  // Posteingaenge fuer Coaching-Anfragen, mehrere Adressen mit Komma getrennt
+  mailToCoaching: (process.env.MAIL_TO_COACHING || '').split(',').map((s) => s.trim()).filter(Boolean),
   // Ordner mit Guide 3 (nicht im Repo, das ist oeffentlich). In Coolify als
   // Persistent Storage mounten und hier den Pfad setzen. Standard: ./private-pdfs
   pdfDir: process.env.PDF_DIR || '',
