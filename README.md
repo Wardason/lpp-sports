@@ -39,7 +39,7 @@ Tests: `npm test`.
 4. Env-Variablen setzen (siehe unten).
 5. Guide 3 als Persistent Storage mounten (Datei `guide-3-wie-ich-trainieren-sollte.pdf`
    in einen Ordner, z. B. `/data/pdfs`) und `PDF_DIR=/data/pdfs` setzen.
-6. Resend: Domain verifizieren (SPF/DKIM/DMARC), Key und `MAIL_FROM` setzen.
+6. Resend: Domain verifizieren (SPF/DKIM/DMARC), Key, `MAIL_FROM` und `MAIL_TO_COACHING` setzen.
 7. Deploy.
 
 ## Env-Variablen (in Coolify, nie ins Repo)
@@ -57,6 +57,7 @@ Tests: `npm test`.
 | `RESEND_API_KEY` | ja fuer Mailversand | Resend-Key, ohne ihn liefert `/api/lead` in Produktion 503 |
 | `MAIL_FROM` | ja fuer Mailversand | Absender auf verifizierter Domain |
 | `MAIL_BCC` | optional | Archivkopie der Guides-Mails |
+| `MAIL_TO_COACHING` | ja fuer Coaching-Formular | Posteingang fuer Coaching-Anfragen, ohne ihn liefert `/api/coaching` 503 |
 | `PDF_DIR` | ja fuer Mailversand | Ordner mit Guide 3 (Coolify-Volume) |
 | `STRIPE_SECRET_KEY` | spaeter | erst bei Zahlschranke |
 | `STRIPE_WEBHOOK_SECRET` | spaeter | erst bei Zahlschranke |

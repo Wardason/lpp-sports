@@ -60,11 +60,29 @@ document.querySelectorAll('[data-lead-form]').forEach(form=>{
   dlg.querySelector('[data-close-guide3]').addEventListener('click',()=>dlg.close());
   dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close()});
 })();
-document.getElementById('coachForm').addEventListener('submit',e=>{
-  e.preventDefault();const n=document.getElementById('cName').value.trim(),v=document.getElementById('cMail').value.trim(),m=document.getElementById('cMsg');
-  if(!n||!validMail(v)){m.className='form-msg err';m.textContent='Bitte Name und gültige E-Mail-Adresse angeben.';return}
-  m.className='form-msg ok';m.textContent='Anfrage gesendet. Prototyp: Die Anfrage wird noch nicht übermittelt.';
-});
+/* Coaching-Anfrage: geht per E-Mail an uns, der Kunde bekommt eine Bestätigung */
+(function(){
+  const form=document.getElementById('coachForm');if(!form)return;
+  const m=document.getElementById('cMsg'),btn=form.querySelector('button[type=submit]');
+  const say=(cls,t)=>{m.className='form-msg '+cls;m.textContent=t};
+  form.addEventListener('submit',async e=>{
+    e.preventDefault();
+    const name=document.getElementById('cName').value.trim(),email=document.getElementById('cMail').value.trim();
+    if(!name||!validMail(email))return say('err','Bitte Name und gültige E-Mail-Adresse angeben.');
+    btn.disabled=true;say('','Wird gesendet …');
+    try{
+      const r=await fetch('/api/coaching',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({name,email,why:document.getElementById('cWhy').value,phone:document.getElementById('cTel').value.trim(),_website:form.elements._website.value,landedAt})});
+      const j=await r.json().catch(()=>({}));
+      if(!r.ok){say('err',j.error||'Das hat nicht geklappt. Bitte versuche es später erneut.');btn.disabled=false;return}
+      say('ok',j.simulated
+        ?'Testmodus: Alles hat geklappt, es wurde aber keine echte E-Mail versendet.'
+        :'Anfrage gesendet. Wir melden uns zeitnah bei dir, eine Bestätigung ist an '+email+' unterwegs.');
+      form.querySelectorAll('input,select').forEach(i=>{i.disabled=true});return; /* Erfolg: Formular bleibt gesperrt */
+    }catch{say('err','Keine Verbindung. Bitte versuche es später erneut.')}
+    btn.disabled=false
+  });
+})();
 
 
 /* Mobile Erstgespräch-Leiste: nach dem Hero einblenden, am Formular ausblenden */

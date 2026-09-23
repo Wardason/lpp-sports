@@ -1,7 +1,7 @@
 # Mailversand via Resend, Implementierungs-Handoff
 
 Status: `/api/lead` gebaut (Stand 2026-09-21), siehe `docs/adr/0002-mailversand-resend.md`.
-Offen: `/api/coaching`, DNS, AVV. Achtung: Das Repo ist oeffentlich, Variante 1
+Offen: DNS, AVV. `/api/coaching` ist umgesetzt (siehe ADR 0002). Achtung: Das Repo ist oeffentlich, Variante 1
 weiter unten (PDFs committen) ist damit ausgeschlossen, Guide 3 kommt per `PDF_DIR`.
 
 Dieses Dokument ist selbst-enthalten, damit ein spaeterer Agent es ohne weiteren

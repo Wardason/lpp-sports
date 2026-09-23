@@ -33,6 +33,15 @@ lesbar.
 - **Testmodus:** Ohne `RESEND_API_KEY` sendet der Server lokal nichts und
   antwortet mit `simulated: true`. In Produktion liefert das 503.
 
+## Coaching-Anfrage
+
+`POST /api/coaching` (Name, E-Mail, Grund, optional Telefon). Die Anfrage geht an
+`MAIL_TO_COACHING` mit `reply_to` auf den Kunden, danach eine Bestaetigung an den
+Kunden. Scheitert nur die Bestaetigung, gilt die Anfrage trotzdem als gesendet.
+Gleiches Anti-Spam wie `/api/lead` (gemeinsame Funktion `looksLikeBot`), eigene
+Rate-Limits. Nutzereingaben werden fuer den Betreff einzeilig gemacht und im
+HTML escaped. Ohne `MAIL_TO_COACHING` liefert die Route 503.
+
 ## Plan-Berater
 
 `POST /api/berater`: KI-Chat, der per Rueckfragen die passende der drei Stufen
@@ -50,4 +59,3 @@ stellt das Frontend vier feste Fragen.
   zulaessig, fuer spaetere Werbemails braucht es eine bestaetigte Einwilligung.
 - **AVV und Datenschutzerklaerung** mit Resend und dem KI-Anbieter.
 - **DNS** (SPF, DKIM, DMARC) fuer die Absenderdomain.
-- Coaching-Formular (`/api/coaching`) ist noch nicht angebunden.

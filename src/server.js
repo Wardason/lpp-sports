@@ -1,5 +1,5 @@
 // LPP Sports: ein Service, same-origin. Liefert die statische Seite aus und
-// stellt die API bereit (Konfigurator, Plan-Berater, Guides-Versand).
+// stellt die API bereit (Konfigurator, Plan-Berater, Guides-Versand, Coaching-Anfrage).
 // Sicherheit von Anfang an: serverseitiger Prompt, Rate-Limit, Origin-Check,
 // Captcha, Security-Header.
 import { serve } from '@hono/node-server';
@@ -15,7 +15,7 @@ import { rateLimit } from './ratelimit.js';
 import { buildPlan } from './prompt.js';
 import { streamPlan, completeChat, providerReady } from './llm.js';
 import { buildChat, parseReply } from './berater.js';
-import { sendGuides, validEmail } from './mail.js';
+import { sendGuides, sendCoaching, validEmail } from './mail.js';
 
 const app = new Hono();
 
@@ -161,9 +161,24 @@ app.post('/api/berater', bodyLimit({ maxSize: 16 * 1024, onError: (c) => c.json(
   }
 });
 
-// Guides-Anmeldung: schickt alle drei Guides per Resend. Leichtes Anti-Spam
-// statt Captcha (Honeypot, Time-Trap, Rate-Limit), siehe docs/mailversand-resend.md.
+// Mail-Formulare: leichtes Anti-Spam statt Captcha (Honeypot, Time-Trap,
+// Rate-Limit), siehe docs/mailversand-resend.md.
 const MIN_FILL_MS = 5000;
+
+// Honeypot gefuellt oder zu schnell abgeschickt. Bots bekommen einen
+// vorgetaeuschten Erfolg, damit sie nichts lernen.
+function looksLikeBot(body) {
+  if (typeof body?._website === 'string' && body._website !== '') return true;
+  const landedAt = Number(body?.landedAt);
+  return !Number.isFinite(landedAt) || Date.now() - landedAt < MIN_FILL_MS;
+}
+
+// Einzeilig, ohne Steuerzeichen, begrenzt. Fuer Betreff und Mailtext.
+function cleanLine(v, max) {
+  return String(v ?? '').replace(/[\u0000-\u001f\u007f]+/g, ' ').replace(/\s{2,}/g, ' ').trim().slice(0, max);
+}
+
+// Guides-Anmeldung: schickt alle drei Guides per Resend.
 
 app.post('/api/lead', bodyLimit({ maxSize: 4 * 1024, onError: (c) => c.json({ error: 'Anfrage zu groß' }, 413) }), async (c) => {
   if (!originAllowed(c)) return c.json({ error: 'Ungültige Herkunft' }, 403);
@@ -179,10 +194,7 @@ app.post('/api/lead', bodyLimit({ maxSize: 4 * 1024, onError: (c) => c.json({ er
   if (!validEmail(email)) return c.json({ error: 'Bitte gib eine gültige E-Mail-Adresse ein.' }, 400);
   if (body?.consent !== true) return c.json({ error: 'Bitte bestätige die Einwilligung.' }, 400);
 
-  // Bots bekommen einen vorgetaeuschten Erfolg, damit sie nichts lernen.
-  if (typeof body?._website === 'string' && body._website !== '') return c.json({ ok: true });
-  const landedAt = Number(body?.landedAt);
-  if (!Number.isFinite(landedAt) || Date.now() - landedAt < MIN_FILL_MS) return c.json({ ok: true });
+  if (looksLikeBot(body)) return c.json({ ok: true });
 
   const ip = clientIp(c);
   const perMail = rateLimit(`lead:${ip}:${email}`, 3, 60 * 60000);
@@ -196,6 +208,40 @@ app.post('/api/lead', bodyLimit({ maxSize: 4 * 1024, onError: (c) => c.json({ er
     return c.json({ ok: true, simulated: r.simulated });
   } catch (e) {
     if (e.code === 'NO_MAIL' || e.code === 'NO_PDF') return c.json({ error: 'Der Versand ist noch nicht eingerichtet.' }, 503);
+    return c.json({ error: 'Der Versand hat nicht geklappt. Bitte versuche es später erneut.' }, 502);
+  }
+});
+
+// Coaching-Anfrage: Anfrage an MAIL_TO_COACHING, Bestaetigung an den Kunden.
+app.post('/api/coaching', bodyLimit({ maxSize: 4 * 1024, onError: (c) => c.json({ error: 'Anfrage zu groß' }, 413) }), async (c) => {
+  if (!originAllowed(c)) return c.json({ error: 'Ungültige Herkunft' }, 403);
+
+  let body;
+  try {
+    body = await c.req.json();
+  } catch {
+    return c.json({ error: 'Ungültige Anfrage' }, 400);
+  }
+
+  const name = cleanLine(body?.name, 100);
+  const email = String(body?.email ?? '').trim().toLowerCase();
+  if (name.length < 2) return c.json({ error: 'Bitte gib deinen Namen an.' }, 400);
+  if (!validEmail(email)) return c.json({ error: 'Bitte gib eine gültige E-Mail-Adresse ein.' }, 400);
+
+  if (looksLikeBot(body)) return c.json({ ok: true });
+
+  const ip = clientIp(c);
+  const perMail = rateLimit(`coach:${ip}:${email}`, 3, 60 * 60000);
+  const perIp = rateLimit(`coachip:${ip}`, 10, 60 * 60000);
+  if (!perMail.allowed || !perIp.allowed) {
+    return c.json({ error: 'Zu viele Anfragen. Bitte versuche es später erneut.' }, 429);
+  }
+
+  try {
+    const r = await sendCoaching({ name, email, why: cleanLine(body?.why, 200), phone: cleanLine(body?.phone, 40) });
+    return c.json({ ok: true, simulated: r.simulated });
+  } catch (e) {
+    if (e.code === 'NO_MAIL') return c.json({ error: 'Der Versand ist noch nicht eingerichtet.' }, 503);
     return c.json({ error: 'Der Versand hat nicht geklappt. Bitte versuche es später erneut.' }, 502);
   }
 });
@@ -223,6 +269,9 @@ serve({ fetch: app.fetch, port: config.port }, (info) => {
     console.warn('[config] Kein Provider-Key gesetzt, /api/plan und /api/berater liefern 503, das Frontend zeigt Musteransicht bzw. feste Fragen.');
   }
   if (!config.resendKey) {
-    console.warn(config.isProd ? '[config] RESEND_API_KEY fehlt, /api/lead liefert 503.' : '[config] RESEND_API_KEY fehlt, /api/lead laeuft im Testmodus (keine Mail).');
+    console.warn(config.isProd ? '[config] RESEND_API_KEY fehlt, /api/lead und /api/coaching liefern 503.' : '[config] RESEND_API_KEY fehlt, /api/lead und /api/coaching laufen im Testmodus (keine Mail).');
+  }
+  if (!config.mailToCoaching) {
+    console.warn('[config] MAIL_TO_COACHING fehlt, /api/coaching liefert 503.');
   }
 });
