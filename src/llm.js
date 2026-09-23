@@ -15,6 +15,12 @@ const providers = {
       messages: [{ role: 'user', content: prompt }],
     }),
     extract: (json) => json?.choices?.[0]?.delta?.content || '',
+    chatBody: (system, messages, model, maxTokens) => ({
+      model,
+      max_tokens: maxTokens,
+      messages: [{ role: 'system', content: system }, ...messages],
+    }),
+    chatExtract: (json) => json?.choices?.[0]?.message?.content || '',
   },
   anthropic: {
     url: 'https://api.anthropic.com/v1/messages',
@@ -32,6 +38,8 @@ const providers = {
       messages: [{ role: 'user', content: prompt }],
     }),
     extract: (json) => (json?.type === 'content_block_delta' ? json?.delta?.text || '' : ''),
+    chatBody: (system, messages, model, maxTokens) => ({ model, max_tokens: maxTokens, system, messages }),
+    chatExtract: (json) => (json?.content || []).map((b) => b?.text || '').join(''),
   },
 };
 
@@ -40,7 +48,7 @@ export function providerReady() {
   return Boolean(p && p.key());
 }
 
-export async function streamPlan(prompt) {
+function pick() {
   const p = providers[config.anbieter];
   if (!p) {
     const e = new Error('Unbekannter KI-Anbieter');
@@ -53,15 +61,13 @@ export async function streamPlan(prompt) {
     e.code = 'NO_KEY';
     throw e;
   }
-  const model = config.modell || p.defaultModel;
+  return { p, key, model: config.modell || p.defaultModel };
+}
 
+async function callUpstream(p, key, body) {
   let upstream;
   try {
-    upstream = await fetch(p.url, {
-      method: 'POST',
-      headers: p.headers(key),
-      body: JSON.stringify(p.body(prompt, model)),
-    });
+    upstream = await fetch(p.url, { method: 'POST', headers: p.headers(key), body: JSON.stringify(body) });
   } catch {
     const e = new Error('KI-Anbieter nicht erreichbar');
     e.code = 'UPSTREAM';
@@ -75,6 +81,25 @@ export async function streamPlan(prompt) {
     e.code = 'UPSTREAM';
     throw e;
   }
+  return upstream;
+}
+
+// Kurze Chat-Antwort ohne Streaming (Plan-Berater).
+export async function completeChat({ system, messages, maxTokens = 500 }) {
+  const { p, key, model } = pick();
+  const upstream = await callUpstream(p, key, p.chatBody(system, messages, model, maxTokens));
+  const text = p.chatExtract(await upstream.json().catch(() => null));
+  if (!text.trim()) {
+    const e = new Error('Leere KI-Antwort');
+    e.code = 'UPSTREAM';
+    throw e;
+  }
+  return text.trim();
+}
+
+export async function streamPlan(prompt) {
+  const { p, key, model } = pick();
+  const upstream = await callUpstream(p, key, p.body(prompt, model));
 
   const decoder = new TextDecoder();
   const encoder = new TextEncoder();

@@ -23,14 +23,43 @@ const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){words
 io.observe(document.getElementById('benefitWords'));
 if(matchMedia('(prefers-reduced-motion: reduce)').matches) words.forEach(w=>w.classList.add('on'));
 
-/* Formulare (Prototyp) */
+/* Formulare */
 const validMail=v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
-document.getElementById('signupForm').addEventListener('submit',e=>{
-  e.preventDefault();const v=document.getElementById('suEmail').value.trim(),m=document.getElementById('suMsg');
-  if(!validMail(v)){m.className='form-msg err';m.textContent='Bitte gib eine gültige E-Mail-Adresse ein.';return}
-  if(!document.getElementById('suConsent').checked){m.className='form-msg err';m.textContent='Bitte bestätige, dass wir dir die Guides per E-Mail schicken dürfen.';return}
-  m.className='form-msg ok';m.textContent='Eingetragen. Prototyp: Der Versand der Guides ist noch nicht angebunden.';
+
+/* Anti-Spam: Zeitpunkt des Seitenaufrufs (sessionStorage, damit ein Reload den Timer nicht zurücksetzt) */
+const landedAt=(()=>{try{let t=sessionStorage.getItem('lpp_landed');if(!t){t=String(Date.now());sessionStorage.setItem('lpp_landed',t)}return +t}catch{return Date.now()}})();
+
+/* Guides-Anmeldung: schickt alle drei Guides per E-Mail (Formulare mit data-lead-form) */
+document.querySelectorAll('[data-lead-form]').forEach(form=>{
+  const msg=form.querySelector('.form-msg'),btn=form.querySelector('button[type=submit]');
+  const say=(cls,t)=>{msg.className='form-msg '+cls;msg.textContent=t};
+  form.addEventListener('submit',async e=>{
+    e.preventDefault();
+    const email=form.elements.email.value.trim();
+    if(!validMail(email))return say('err','Bitte gib eine gültige E-Mail-Adresse ein.');
+    if(!form.elements.consent.checked)return say('err','Bitte bestätige, dass wir dir die Guides per E-Mail schicken dürfen.');
+    btn.disabled=true;say('','Wird gesendet …');
+    try{
+      const r=await fetch('/api/lead',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({email,consent:true,_website:form.elements._website.value,landedAt})});
+      const j=await r.json().catch(()=>({}));
+      if(!r.ok){say('err',j.error||'Das hat nicht geklappt. Bitte versuche es später erneut.');btn.disabled=false;return}
+      say('ok',j.simulated
+        ?'Testmodus: Alles hat geklappt, es wurde aber keine echte E-Mail versendet.'
+        :'Geschafft. Wir haben dir alle drei Guides an '+email+' geschickt. Schau auch im Spam-Ordner nach.');
+      form.querySelectorAll('input').forEach(i=>{i.disabled=true});return; /* Erfolg: Formular bleibt gesperrt */
+    }catch{say('err','Keine Verbindung. Bitte versuche es später erneut.')}
+    btn.disabled=false
+  });
 });
+
+/* Guide 3: verschwommene Vorschau, Freischaltung per E-Mail */
+(function(){
+  const dlg=document.getElementById('guide3Dialog');if(!dlg)return;
+  document.querySelectorAll('[data-open-guide3]').forEach(b=>b.addEventListener('click',()=>{dlg.showModal();setTimeout(()=>dlg.querySelector('input[name=email]').focus(),50)}));
+  dlg.querySelector('[data-close-guide3]').addEventListener('click',()=>dlg.close());
+  dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close()});
+})();
 document.getElementById('coachForm').addEventListener('submit',e=>{
   e.preventDefault();const n=document.getElementById('cName').value.trim(),v=document.getElementById('cMail').value.trim(),m=document.getElementById('cMsg');
   if(!n||!validMail(v)){m.className='form-msg err';m.textContent='Bitte Name und gültige E-Mail-Adresse angeben.';return}

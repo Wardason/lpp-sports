@@ -11,3 +11,7 @@ api/ki-config.php
 
 # gated Lead-Magnets, gehoeren nicht ins Repo
 private-pdfs/
+
+# lokale Werkzeuge (Node-Download), nicht committen
+.tools/
+.claude/

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LPP Sports – Krafttraining für Männer mit wenig Zeit</title>
-<meta name="description" content="Krafttraining für Männer zwischen 30 und 40 mit vollem Kalender: Gratis-Guides, persönliches Coaching und KI-Trainingsplan.">
+<meta name="description" content="Krafttraining für Männer zwischen 30 und 40 mit vollem Kalender: Gratis-Guides, persönliches Coaching und Trainingsplan-Konfigurator.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,400..900;1,62..125,400..900&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
@@ -19,7 +19,7 @@
     <nav class="main" id="mainnav">
       <a href="#guides">Gratis-Guides</a>
       <a href="#angebote">Angebote</a>
-      <a href="ki-plan.html">KI-Plan</a>
+      <a href="konfigurator.html">Konfigurator</a>
       <a href="#faq">FAQ</a>
       <a class="btn btn-primary" href="#coaching">Coaching anfragen</a>
     </nav>
@@ -79,17 +79,19 @@
 
     <div class="guide-list">
       <article class="guide">
-        <div class="cover static"><img src="assets/guide-seiten/guide1-cover.webp" alt="Titelseite von Guide 1" width="150" height="212" loading="lazy" decoding="async"><span class="badge">1</span></div>
-        <div><h3>Warum ich trainieren sollte</h3><p class="sub">Der Mindset- &amp; Health-Guide · PDF, 5 Seiten</p></div>
+        <a class="cover" href="guides/guide-1-warum-ich-trainieren-sollte.pdf" target="_blank" rel="noopener" aria-label="Guide 1 lesen (PDF, öffnet in neuem Tab)"><img src="assets/guide-seiten/guide1-cover.webp" alt="Titelseite von Guide 1" width="150" height="212" loading="lazy" decoding="async"><span class="badge">1</span></a>
+        <div><h3>Warum ich trainieren sollte</h3><p class="sub">Der Mindset- &amp; Health-Guide · PDF, 5 Seiten</p>
+          <div class="guide-actions"><a class="btn btn-primary" href="guides/guide-1-warum-ich-trainieren-sollte.pdf" target="_blank" rel="noopener">Jetzt lesen</a></div></div>
         <ul><li>Warum schon 30–60 Minuten pro Woche mit einem geringeren Krankheitsrisiko zusammenhängen</li><li>Was Krafttraining nachweislich mit Stimmung und Anspannung macht</li></ul>
       </article>
       <article class="guide">
-        <div class="cover static"><img src="assets/guide-seiten/guide2-cover.webp" alt="Titelseite von Guide 2" width="150" height="212" loading="lazy" decoding="async"><span class="badge">2</span></div>
-        <div><h3>Warum dein Training nichts bringt</h3><p class="sub">Der Aufklärungs-Guide · PDF, 5 Seiten</p></div>
+        <a class="cover" href="guides/guide-2-warum-dein-training-nichts-bringt.pdf" target="_blank" rel="noopener" aria-label="Guide 2 lesen (PDF, öffnet in neuem Tab)"><img src="assets/guide-seiten/guide2-cover.webp" alt="Titelseite von Guide 2" width="150" height="212" loading="lazy" decoding="async"><span class="badge">2</span></a>
+        <div><h3>Warum dein Training nichts bringt</h3><p class="sub">Der Aufklärungs-Guide · PDF, 5 Seiten</p>
+          <div class="guide-actions"><a class="btn btn-primary" href="guides/guide-2-warum-dein-training-nichts-bringt.pdf" target="_blank" rel="noopener">Jetzt lesen</a></div></div>
         <ul><li>Das „Alibi-Training“ und wie du es erkennst</li><li>Intensität, Volumen, Frequenz – und warum Steigerung das Wachstum verdoppeln kann</li></ul>
       </article>
       <article class="guide free">
-        <div class="cover static"><img src="assets/guide-seiten/guide3-cover.webp" alt="Titelseite von Guide 3" width="150" height="212" loading="lazy" decoding="async"><span class="badge">3</span></div>
+        <button class="cover" type="button" data-open-guide3 aria-label="Guide 3 lesen, per E-Mail freischalten"><img src="assets/guide-seiten/guide3-cover.webp" alt="Titelseite von Guide 3" width="150" height="212" loading="lazy" decoding="async"><span class="badge">3</span></button>
         <div><span class="pill">Mit kostenlosem Trainingsplan</span><h3>Wie ich trainieren sollte</h3><p class="sub">Der No-Bullshit-Trainingsplan · PDF, 6 Seiten</p>
           <ul style="padding-left:18px;color:var(--muted);margin:10px 0 0"><li>4 Tage, je 60 Minuten, jede Muskelgruppe 2× pro Woche</li><li>Die Steigerungsregel für jede Übung</li><li>Leere Plan-Vorlage für 4 Wochen</li></ul>
         </div>
@@ -98,25 +100,26 @@
           <div class="lock">
             <b>Dein Gratis-Trainingsplan</b>
             <span>Trag deine E-Mail ein – wir schicken dir alle drei Guides samt Plan unverbindlich zu.</span>
-            <a class="btn btn-primary" href="#guides-mail">Guides freischalten</a>
+            <button class="btn btn-primary" type="button" data-open-guide3>Guide 3 lesen</button>
           </div>
         </div>
       </article>
     </div>
 
-    <form class="signup" id="signupForm" novalidate>
+    <form class="signup" id="guides-mail" data-lead-form novalidate>
       <div>
         <h3>Alle drei Guides kostenlos per E-Mail</h3>
-        <p>Inklusive dem 4-Tage-Trainingsplan als PDF. Danach bekommst du ab und zu Tipps und Angebote von uns – Abmeldung jederzeit mit einem Klick.</p>
+        <p>Guide 1 und 2 kannst du oben direkt lesen. Guide 3 mit dem 4-Tage-Trainingsplan gibt es nur per E-Mail – zusammen mit den beiden anderen als PDF. Danach bekommst du ab und zu Tipps und Angebote von uns, Abmeldung jederzeit.</p>
       </div>
       <div>
         <label class="sr" for="suEmail">E-Mail-Adresse</label>
         <div class="field-row">
-          <input id="suEmail" type="email" placeholder="deine@email.de" autocomplete="email" required>
+          <input id="suEmail" name="email" type="email" placeholder="deine@email.de" autocomplete="email" required>
           <button class="btn btn-primary" type="submit">Guides kostenlos zusenden</button>
         </div>
-        <label class="consent"><input type="checkbox" id="suConsent"> <span>Ich möchte die Guides und gelegentlich Tipps und Angebote per E-Mail erhalten. Die Einwilligung kann ich jederzeit widerrufen.</span></label>
-        <p class="form-msg" id="suMsg" role="status"></p>
+        <div class="honeypot" aria-hidden="true"><label>Website <input type="text" name="_website" tabindex="-1" autocomplete="off"></label></div>
+        <label class="consent"><input type="checkbox" name="consent"> <span>Ich möchte die Guides und gelegentlich Tipps und Angebote per E-Mail erhalten. Die Einwilligung kann ich jederzeit widerrufen. Mehr in der <a href="datenschutz.html">Datenschutzerklärung</a>.</span></label>
+        <p class="form-msg" role="status"></p>
       </div>
     </form>
   </div>
@@ -142,11 +145,12 @@
 <section id="angebote">
   <div class="wrap">
     <h2>Ein Plan allein hält dich nicht dran.</h2>
-    <p class="lede" style="margin-top:18px">Die meisten scheitern nicht am fehlenden Wissen, sondern am Dranbleiben. Deshalb ist persönliche Begleitung unser Kernangebot – in zwei Stufen. Wer lieber allein loslegt, bekommt den KI-Plan.</p>
+    <p class="lede" style="margin-top:18px">Die meisten scheitern nicht am fehlenden Wissen, sondern am Dranbleiben. Deshalb ist persönliche Begleitung unser Kernangebot – in zwei Stufen. Wer lieber allein loslegt, bekommt den Konfigurator-Plan.</p>
+    <p style="margin-top:20px"><a class="link-arrow" href="#berater">Nicht sicher, welche Stufe passt? Frag den Plan-Berater</a></p>
     <div class="tiers">
       <article class="tier">
         <div class="kind">Einmalzahlung</div>
-        <h3>KI-Trainingsplan</h3>
+        <h3>Konfigurator-Plan</h3>
         <p class="for">Für dich, wenn du dich selbst antreibst und nur den passenden Plan brauchst.</p>
         <div class="price"><b>€ –</b><span>einmalig</span></div>
         <ul class="checks">
@@ -155,7 +159,7 @@
           <li>In wenigen Minuten fertig</li>
           <li>Keine Betreuung, keine Anpassung</li>
         </ul>
-        <a class="btn btn-ghost" href="ki-plan.html">Plan konfigurieren</a>
+        <a class="btn btn-ghost" href="konfigurator.html">Plan konfigurieren</a>
       </article>
 
       <article class="tier">
@@ -188,7 +192,25 @@
         <a class="btn btn-primary" href="#coaching">Coaching anfragen</a>
       </article>
     </div>
-    <p class="tier-note">Der KI-Plan kostet einmalig so viel wie ein Monat Basis-Coaching. Für dasselbe Geld bekommst du dort einen Monat lang Begleitung statt nur eine PDF-Datei.</p>
+    <p class="tier-note">Der Konfigurator-Plan kostet einmalig so viel wie ein Monat Basis-Coaching. Für dasselbe Geld bekommst du dort einen Monat lang Begleitung statt nur eine PDF-Datei.</p>
+
+    <div class="advisor" id="berater">
+      <div class="advisor-intro">
+        <h3>Nicht sicher, welche Stufe passt?</h3>
+        <p>Unser Plan-Berater stellt dir ein paar kurze Fragen und sagt dir, welche der drei Stufen am besten zu dir passt. Das dauert etwa zwei Minuten und verpflichtet zu nichts.</p>
+        <p class="advisor-note">Der Berater ist eine KI. Bitte schreib keine Namen oder Gesundheitsdaten hinein. Deine Nachrichten werden zur Beantwortung an einen KI-Dienstleister übermittelt, Details in der <a href="datenschutz.html">Datenschutzerklärung</a>.</p>
+      </div>
+      <div class="chat" aria-label="Plan-Berater">
+        <div class="chat-log" id="chatLog" role="log" aria-live="polite"></div>
+        <div class="chat-quick" id="chatQuick"></div>
+        <form class="chat-form" id="chatForm" autocomplete="off">
+          <label class="sr" for="chatInput">Deine Nachricht</label>
+          <input id="chatInput" type="text" maxlength="500" placeholder="Schreib hier …">
+          <button class="btn btn-primary" type="submit" id="chatSend">Senden</button>
+        </form>
+        <button class="chat-reset" type="button" id="chatReset">Neu starten</button>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -229,12 +251,12 @@
   </div>
 </section>
 
-<section id="ki-plan">
+<section id="konfigurator-info">
   <div class="wrap ki-teaser">
     <div>
       <h2>Lieber alleine loslegen?</h2>
-      <p class="lede" style="margin-top:18px">Mit dem KI-Plan bekommst du einen Trainings- und Ernährungsplan, der zu deinem Körper, deiner Woche und deinem Geschmack passt. Einmal zahlen, sofort starten – ohne Betreuung.</p>
-      <a class="btn btn-ghost" href="ki-plan.html">KI-Plan erstellen</a>
+      <p class="lede" style="margin-top:18px">Mit dem Konfigurator bekommst du einen Trainings- und Ernährungsplan, der zu deinem Körper, deiner Woche und deinem Geschmack passt. Einmal zahlen, sofort starten – ohne Betreuung.</p>
+      <a class="btn btn-ghost" href="konfigurator.html">Konfigurator starten</a>
     </div>
     <ol class="mini-steps">
       <li><div><b>Fragen beantworten</b><span>Alter, Trainingstage, Ziele, Lieblingsübungen, Allergien – in etwa drei Minuten.</span></div></li>
@@ -324,7 +346,7 @@
         <span class="fc-back"><b>Warum das so ist</b><span>Vitamine, Mineralstoffe und Ballaststoffe halten dich leistungsfähig und gesund. Sie bauen keinen Muskel auf, aber ohne sie fühlst du dich schlapp – und trainierst entsprechend.</span></span>
       </button>
     </div>
-    <p class="day-note"><b>Ehrlich eingeordnet:</b> Die Reihenfolge im Tag ist die Kür. Pflicht sind die Tagesmenge an Eiweiß, genug Energie insgesamt und Regelmäßigkeit. Wer das erfüllt, macht mit dieser Einteilung nichts falsch – sie macht den Tag nur einfacher planbar. Der KI-Plan passt sie an deine Arbeitszeiten, deine Trainingszeit und deine Vorlieben an.</p>
+    <p class="day-note"><b>Ehrlich eingeordnet:</b> Die Reihenfolge im Tag ist die Kür. Pflicht sind die Tagesmenge an Eiweiß, genug Energie insgesamt und Regelmäßigkeit. Wer das erfüllt, macht mit dieser Einteilung nichts falsch – sie macht den Tag nur einfacher planbar. Der Konfigurator passt sie an deine Arbeitszeiten, deine Trainingszeit und deine Vorlieben an.</p>
   </div>
 </section>
 
@@ -333,27 +355,49 @@
     <h2>Häufige Fragen</h2>
     <div class="faq">
       <details><summary>Reichen wirklich vier Stunden pro Woche?</summary><p>Für die meisten Männer ja. Entscheidend ist nicht die Zeit im Studio, sondern ob du genug fordernde Sätze machst, jede Muskelgruppe zweimal pro Woche trainierst und das Gewicht regelmäßig steigerst. Genau das erklärt Guide 2.</p></details>
-      <details><summary>Was ist der Unterschied zwischen KI-Plan und Coaching?</summary><p>Den KI-Plan bezahlst du einmal und setzt ihn selbstständig um. Im Basis-Coaching bekommst du jede Woche einen Check und monatlich eine Auswertung mit Plananpassung. Im Premium-Coaching erstellen wir den Plan gemeinsam, prüfen deine Technik per Video, du kannst jederzeit Fragen stellen und wir passen an, sobald es nötig ist.</p></details>
+      <details><summary>Was ist der Unterschied zwischen Konfigurator-Plan und Coaching?</summary><p>Den Konfigurator-Plan bezahlst du einmal und setzt ihn selbstständig um. Im Basis-Coaching bekommst du jede Woche einen Check und monatlich eine Auswertung mit Plananpassung. Im Premium-Coaching erstellen wir den Plan gemeinsam, prüfen deine Technik per Video, du kannst jederzeit Fragen stellen und wir passen an, sobald es nötig ist.</p></details>
       <details><summary>Kann ich das Coaching monatlich kündigen?</summary><p>Laufzeiten und Konditionen nennen wir dir in der Antwort auf deine Anfrage. Dort klären wir auch, welche der beiden Stufen zu dir passt.</p></details>
-      <details><summary>Ich bin über 40 oder unter 30 – passt das trotzdem?</summary><p>Ja. Unsere Inhalte sind für Männer zwischen 30 und 40 geschrieben, die Prinzipien gelten aber für alle Erwachsenen. Der KI-Plan berücksichtigt dein Alter.</p></details>
+      <details><summary>Ich bin über 40 oder unter 30 – passt das trotzdem?</summary><p>Ja. Unsere Inhalte sind für Männer zwischen 30 und 40 geschrieben, die Prinzipien gelten aber für alle Erwachsenen. Der Konfigurator berücksichtigt dein Alter.</p></details>
       <details><summary>Muss ich genau in dieser Reihenfolge essen?</summary><p>Nein. Entscheidend sind die Tagesmenge an Eiweiß, genug Energie insgesamt und Regelmäßigkeit. Die Einteilung über den Tag macht das Ganze nur planbar und sorgt dafür, dass du vor dem Training Energie hast und danach genug Eiweiß bekommst.</p></details>
       <details><summary>Muss ich Diät halten?</summary><p>Nein. Der Ernährungsplan ist bewusst einfach, berücksichtigt, worauf du nicht verzichten willst, und erlaubt auf Wunsch ein Cheat Meal pro Woche.</p></details>
-      <details><summary>Ich habe Beschwerden oder Vorerkrankungen.</summary><p>Dann kläre bitte vor dem Start mit deinem Arzt ab, was für dich passt. Im KI-Plan kannst du Einschränkungen angeben, das ersetzt aber keine ärztliche Beratung.</p></details>
+      <details><summary>Ich habe Beschwerden oder Vorerkrankungen.</summary><p>Dann kläre bitte vor dem Start mit deinem Arzt ab, was für dich passt. Im Konfigurator kannst du Einschränkungen angeben, das ersetzt aber keine ärztliche Beratung.</p></details>
     </div>
   </div>
 </section>
 </main>
+
+<dialog class="g3" id="guide3Dialog" aria-labelledby="g3Title">
+  <div class="g3-bar"><strong id="g3Title">Guide 3 · Wie ich trainieren sollte</strong><button class="btn btn-ghost" type="button" data-close-guide3>Schließen</button></div>
+  <div class="g3-body">
+    <div class="g3-preview">
+      <img src="assets/guide-seiten/guide3-vorschau-blur.webp" alt="Verschwommene Vorschau von Guide 3" width="640" height="497" decoding="async">
+      <span>Vorschau gesperrt</span>
+    </div>
+    <form data-lead-form novalidate>
+      <h3>Diesen Guide per E-Mail freischalten</h3>
+      <p>Trag deine E-Mail ein. Du bekommst Guide 3 mit dem 4-Tage-Trainingsplan und die beiden anderen Guides als PDF ins Postfach.</p>
+      <label class="sr" for="g3Email">E-Mail-Adresse</label>
+      <input id="g3Email" name="email" type="email" placeholder="deine@email.de" autocomplete="email" required>
+      <div class="honeypot" aria-hidden="true"><label>Website <input type="text" name="_website" tabindex="-1" autocomplete="off"></label></div>
+      <label class="consent"><input type="checkbox" name="consent"> <span>Ich möchte die Guides und gelegentlich Tipps und Angebote per E-Mail erhalten. Die Einwilligung kann ich jederzeit widerrufen. Mehr in der <a href="datenschutz.html">Datenschutzerklärung</a>.</span></label>
+      <button class="btn btn-primary" type="submit">Guides kostenlos zusenden</button>
+      <p class="form-msg" role="status"></p>
+    </form>
+  </div>
+</dialog>
 
 <div class="sticky-cta" id="stickyCta"><a class="btn btn-primary" href="#coaching">Coaching anfragen</a></div>
 <footer>
   <div class="wrap">
     <div class="foot">
       <a class="logo" href="index.html" style="color:#fff"><span class="mono" aria-hidden="true"><span class="mono-l">L</span><span class="mono-p">P</span></span><span class="wordmark"><b>LPP</b><span>Sports</span></span></a>
-      <nav aria-label="Rechtliches"><a href="#">Impressum</a><a href="#">Datenschutz</a><a href="#">AGB</a><a href="#">Kontakt</a></nav>
+      <nav aria-label="Rechtliches"><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a><a href="agb.html">AGB</a><a href="kontakt.html">Kontakt</a></nav>
     </div>
-    <p class="proto">Prototyp – Preise, Bezahlung, E-Mail-Versand und rechtliche Seiten sind noch nicht angebunden.</p>
+    <p class="proto">Prototyp – Preise und Bezahlung sind noch nicht angebunden. Die rechtlichen Seiten sind Entwürfe.</p>
   </div>
 </footer>
+<script src="assets/captcha.js" defer></script>
 <script src="assets/main.js" defer></script>
+<script src="assets/berater.js" defer></script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-/* Konfigurator */
+/* Konfigurator (benötigt captcha.js) */
 const form=document.getElementById('planForm');
 const panels=[...form.querySelectorAll('.step-panel')];
 const stepItems=[...document.querySelectorAll('#stepList li')];
@@ -16,13 +16,13 @@ function show(){
   stepItems.forEach((li,i)=>{li.classList.toggle('active',i===step);li.classList.toggle('done',i<step)});
   backBtn.hidden=step===0;nextBtn.hidden=step===panels.length-1;
   stepMsg.textContent='';
-  if(step===4){primeCaptcha();const d=data();document.getElementById('summary').innerHTML=
+  if(step===4){LPP.captcha.prime();const d=data();document.getElementById('summary').innerHTML=
     `<b>${d.geschlecht}, ${d.alter} Jahre</b>, ${d.groesse} cm, ${d.gewicht} kg · ${d.erfahrung}<br>
      <b>${d.tage} Tage</b> à ${d.dauer} · ${d.ort} · Ziele: ${d.ziele.join(', ')}<br>
      Schwachstellen: ${d.schwachstellen.join(', ')||'keine angegeben'} · Allergien: ${esc(d.allergien)||'keine'} · ${d.ernaehrungsweise} · ${d.cheatMeal}`}
 }
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-nextBtn.addEventListener('click',()=>{const err=validate();if(err){stepMsg.textContent=err;return}step++;show();document.getElementById('ki-plan').scrollIntoView({block:'start',behavior:'smooth'})});
+nextBtn.addEventListener('click',()=>{const err=validate();if(err){stepMsg.textContent=err;return}step++;show();document.getElementById('konfigurator').scrollIntoView({block:'start',behavior:'smooth'})});
 backBtn.addEventListener('click',()=>{step--;show()});
 
 /* Markdown-light Renderer */
@@ -45,26 +45,6 @@ function md(t){
   close();return html;
 }
 
-/* Proof-of-Work-Captcha: Challenge holen und im Browser loesen.
-   Startet beim Erreichen von Schritt 5, damit die Loesung fertig ist,
-   bevor der Kunde auf "Plan erstellen" klickt. */
-async function solveChallenge(ch){
-  const enc=new TextEncoder();
-  for(let n=0;n<=ch.maxnumber;n++){
-    const buf=await crypto.subtle.digest('SHA-256',enc.encode(ch.salt+n));
-    const hex=[...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('');
-    if(hex===ch.challenge)return{salt:ch.salt,number:n,challenge:ch.challenge,expires:ch.expires,signature:ch.signature};
-  }
-  throw new Error('captcha');
-}
-async function fetchAndSolve(){
-  const r=await fetch('/api/captcha');
-  if(!r.ok)throw new Error('captcha');
-  return solveChallenge(await r.json());
-}
-let captchaPromise=null;
-function primeCaptcha(){if(!captchaPromise)captchaPromise=fetchAndSolve().catch(()=>null)}
-
 const genBtn=document.getElementById('genBtn'),out=document.getElementById('output'),status=document.getElementById('genStatus'),planOut=document.getElementById('planOut'),tools=document.getElementById('genTools'),stopBtn=document.getElementById('stopBtn');
 const consent=document.getElementById('consent'),genMsg=document.getElementById('genMsg');
 let ctl=null;
@@ -84,7 +64,7 @@ Mo: Oberkörper A · Di: Unterkörper B · Do: Oberkörper C · Fr: Unterkörper
 - **Mittags:** Reis, Hähnchen, Gemüse
 - **Vor dem Training:** Banane oder Brot
 - **Nach dem Training:** Quark mit Beeren
-Diese Ansicht ist ein Muster. Sobald die KI-Anbindung eingerichtet ist, wird der Plan aus deinen Angaben erstellt.`;
+Diese Ansicht ist ein Muster. Sobald die Plan-Erstellung eingerichtet ist, entsteht der Plan aus deinen Angaben.`;
 
 genBtn.addEventListener('click',async()=>{
   if(consent&&!consent.checked){genMsg.textContent='Bitte bestätige die Einwilligung, damit wir deinen Plan erstellen dürfen.';return}
@@ -94,13 +74,13 @@ genBtn.addEventListener('click',async()=>{
   tools.hidden=false;ctl=new AbortController();
   let text='';
   try{
-    const captcha=await (captchaPromise||fetchAndSolve());
-    if(!captcha){status.textContent='Die KI-Anbindung ist noch nicht eingerichtet. Hier siehst du eine Musteransicht.';planOut.innerHTML=md(DEMO);return}
+    const captcha=await LPP.captcha.take();
+    if(!captcha){status.textContent='Die Plan-Erstellung ist noch nicht eingerichtet. Hier siehst du eine Musteransicht.';planOut.innerHTML=md(DEMO);return}
     status.textContent='Dein Plan wird erstellt. Das dauert etwa eine Minute …';
     const r=await fetch('/api/plan',{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({data:data(),captcha}),signal:ctl.signal});
     if(r.status===429){status.textContent='Zu viele Anfragen. Bitte in ein paar Minuten erneut.';return}
-    if(r.status===503){status.textContent='Die KI-Anbindung ist noch nicht eingerichtet. Hier siehst du eine Musteransicht.';planOut.innerHTML=md(DEMO);return}
+    if(r.status===503){status.textContent='Die Plan-Erstellung ist noch nicht eingerichtet. Hier siehst du eine Musteransicht.';planOut.innerHTML=md(DEMO);return}
     if(!r.ok||!r.body)throw new Error('server');
     const reader=r.body.getReader(),dec=new TextDecoder();
     for(;;){
@@ -116,7 +96,7 @@ genBtn.addEventListener('click',async()=>{
     if(e.name==='AbortError'){status.textContent='Erstellung gestoppt.'}
     else if(text.trim()){status.textContent='Die Verbindung ist abgebrochen. Der Plan ist unvollständig, bitte noch einmal erstellen.'}
     else{status.textContent='Es hat nicht geklappt. Bitte lade die Seite neu und versuche es erneut.'}
-  }finally{tools.hidden=true;genBtn.disabled=false;captchaPromise=null;primeCaptcha()}
+  }finally{tools.hidden=true;genBtn.disabled=false}
 });
 
 show();

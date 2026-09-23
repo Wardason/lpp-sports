@@ -9,9 +9,9 @@ function captchaSecret() {
   if (v) return v;
   if (isProd) {
     // Nicht crashen: die statische Seite muss laufen. Ohne Schluessel bleibt nur
-    // der KI-Plan aus (503), bis die Variable in Coolify gesetzt ist.
+    // der Konfigurator aus (503), bis die Variable in Coolify gesetzt ist.
     console.error(
-      '[config] CAPTCHA_HMAC_KEY fehlt. Der KI-Plan bleibt aus (503), bis der Schluessel in Coolify gesetzt ist. Erzeugen mit: openssl rand -hex 32',
+      '[config] CAPTCHA_HMAC_KEY fehlt. Der Konfigurator bleibt aus (503), bis der Schluessel in Coolify gesetzt ist. Erzeugen mit: openssl rand -hex 32',
     );
     return '';
   }
@@ -26,6 +26,12 @@ export const config = {
   modell: process.env.KI_MODELL || '',
   allowedOrigin: process.env.ALLOWED_ORIGIN || '',
   captchaSecret: captchaSecret(),
+  resendKey: process.env.RESEND_API_KEY || '',
+  mailFrom: process.env.MAIL_FROM || '',
+  mailBcc: process.env.MAIL_BCC || '',
+  // Ordner mit Guide 3 (nicht im Repo, das ist oeffentlich). In Coolify als
+  // Persistent Storage mounten und hier den Pfad setzen. Standard: ./private-pdfs
+  pdfDir: process.env.PDF_DIR || '',
   port: (() => {
     const p = Number(process.env.PORT);
     return Number.isInteger(p) && p > 0 ? p : 3000;

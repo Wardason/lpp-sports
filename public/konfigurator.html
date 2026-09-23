@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>KI-Trainingsplan erstellen – LPP Sports</title>
-<meta name="description" content="Individueller Trainings- und Ernährungsplan per KI – einmalige Zahlung, in wenigen Minuten fertig.">
+<title>Trainingsplan-Konfigurator – LPP Sports</title>
+<meta name="description" content="Individueller Trainings- und Ernährungsplan aus dem Konfigurator – einmalige Zahlung, in wenigen Minuten fertig.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,400..900;1,62..125,400..900&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
@@ -19,7 +19,7 @@
     <nav class="main" id="mainnav">
       <a href="index.html#guides">Gratis-Guides</a>
       <a href="index.html#angebote">Angebote</a>
-      <a href="ki-plan.html">KI-Plan</a>
+      <a href="konfigurator.html">Konfigurator</a>
       <a href="index.html#faq">FAQ</a>
       <a class="btn btn-primary" href="index.html#coaching">Coaching anfragen</a>
     </nav>
@@ -29,7 +29,7 @@
 <section class="page-hero navy">
   <div class="wrap">
     <a class="crumb" href="index.html">‹ Zur Startseite</a>
-    <h1>Dein KI-Trainings- &amp; Ernährungsplan</h1>
+    <h1>Dein Trainings- &amp; Ernährungsplan</h1>
     <p class="lede">Beantworte ein paar Fragen. Daraus entsteht ein Trainingsplan und ein einfacher Ernährungsplan – abgestimmt auf dich.</p>
     <div class="facts-row">
       <div><b>ca. 3 Min</b>für die Fragen</div>
@@ -38,7 +38,7 @@
     </div>
   </div>
 </section>
-<section id="ki-plan" class="config-page" style="padding-top:56px">
+<section id="konfigurator" class="config-page" style="padding-top:56px">
   <div class="wrap">
 
     <div class="config">
@@ -164,7 +164,7 @@
           <h3>Plan erstellen</h3>
           <p class="hint">Prüfe deine Angaben. Danach folgt die Bezahlung.</p>
           <div class="summary" id="summary"></div>
-          <label class="consent"><input type="checkbox" id="consent"> Ich willige ein, dass meine Angaben, auch Gesundheitsdaten wie Gewicht, Beschwerden und Allergien, zur Erstellung des Plans an den KI-Anbieter übermittelt werden. Mehr dazu in der <a href="#">Datenschutzerklärung</a>.</label>
+          <label class="consent"><input type="checkbox" id="consent"> Ich willige ein, dass meine Angaben, auch Gesundheitsdaten wie Gewicht, Beschwerden und Allergien, zur Erstellung des Plans an einen KI-Dienstleister übermittelt werden. Mehr dazu in der <a href="datenschutz.html">Datenschutzerklärung</a>.</label>
           <p class="form-msg err" id="genMsg" role="alert"></p>
           <div class="pay-box">
             <div><b>Einmalzahlung · Preis folgt</b><br><span>Prototyp: Die Bezahlung ist noch nicht angebunden.</span></div>
@@ -199,12 +199,13 @@
   <div class="wrap">
     <div class="foot">
       <a class="logo" href="index.html" style="color:#fff"><span class="mono" aria-hidden="true"><span class="mono-l">L</span><span class="mono-p">P</span></span><span class="wordmark"><b>LPP</b><span>Sports</span></span></a>
-      <nav aria-label="Rechtliches"><a href="#">Impressum</a><a href="#">Datenschutz</a><a href="#">AGB</a><a href="#">Kontakt</a></nav>
+      <nav aria-label="Rechtliches"><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a><a href="agb.html">AGB</a><a href="kontakt.html">Kontakt</a></nav>
     </div>
-    <p class="proto">Prototyp – Preise, Bezahlung, E-Mail-Versand und rechtliche Seiten sind noch nicht angebunden.</p>
+    <p class="proto">Prototyp – Preise und Bezahlung sind noch nicht angebunden. Die rechtlichen Seiten sind Entwürfe.</p>
   </div>
 </footer>
 <script src="assets/menu.js" defer></script>
-<script src="assets/ki-plan.js" defer></script>
+<script src="assets/captcha.js" defer></script>
+<script src="assets/konfigurator.js" defer></script>
 </body>
 </html>
